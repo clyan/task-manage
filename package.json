@@ -3,29 +3,67 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@welldone-software/why-did-you-render": "^6.1.1",
+    "antd": "^4.15.3",
+    "dayjs": "^1.10.4",
+    "gitmoji-cli": "^4.0.0",
+    "history": "^5.0.0",
+    "qs": "^6.10.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.13.12",
+    "react-router": "^6.0.0-beta.0",
+    "react-router-dom": "^6.0.0-beta.0",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.0.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
+    "@emotion/babel-preset-css-prop": "^11.2.0",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.3.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "@types/jest": "^26.0.15",
     "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
+    "@types/qs": "^6.9.6",
+    "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "babel-plugin-import": "^1.13.3",
+    "commitizen": "^4.2.3",
+    "customize-cra": "^1.0.0-alpha.0",
+    "cz-conventional-changelog": "3.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "husky": "^6.0.0",
+    "jira-dev-tool": "^1.6.59",
+    "json-server": "^0.16.3",
+    "less": "^4.1.1",
+    "less-loader": "7.1.0",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "react-app-rewired": "^2.1.8",
+    "typescript": "^4.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "react-app-rewired  start",
+    "build": "react-app-rewired  build",
+    "test": "react-app-rewired  test",
+    "eject": "react-scripts eject",
+    "prepare": "husky install",
+    "pretter": "npx --no-install pretty-quick --staged",
+    "json-server": "json-server __json_server_mock__/db.json --watch --port 3001  --middlewares ./__json_server_mock__/middleware.js",
+    "pro-start": "hs -o / ./build",
+    "commit": "git add . && cz"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "prettier"
     ]
   },
   "browserslist": {
@@ -39,5 +77,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

@@ -1,24 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
+import AuthenticaedApp from "authenticaed-app";
+import ErrorBoundary from "components/error-boundary";
+import { FullPageErrorFallBack } from "components/lib";
+import { useAuth } from "context/auth-context";
+import React from "react";
+import { UnauthenticatedApp } from "unauthenticated";
+import "./App.css";
+function App(): React.ReactElement<any> {
+  const { user } = useAuth();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ErrorBoundary fallbackRender={FullPageErrorFallBack}>
+        {user ? <AuthenticaedApp /> : <UnauthenticatedApp />}
+      </ErrorBoundary>
     </div>
   );
 }

@@ -1,0 +1,32 @@
+import React from "react";
+import { useDebounce } from "utils";
+import List from "./list";
+import SearchPanel from "./search-panel";
+import styled from "@emotion/styled";
+import { Typography } from "antd";
+import { useProject } from "utils/projects";
+import { useUser } from "utils/user";
+import { useUrlQueryParams } from "utils/url";
+function ProjectListScreen(): React.ReactElement<any> {
+  const [param, setParam] = useUrlQueryParams(["name", "personId"]);
+  // 节流
+  const debounceParam = useDebounce(param, 500);
+  const { isLoading, error, data: list } = useProject(debounceParam);
+  const { data: users } = useUser();
+  return (
+    <Container>
+      <h2>项目列表</h2>
+      <SearchPanel param={param} setParam={setParam} users={users || []} />
+      {error ? (
+        <Typography.Text type={"danger"}> {error.message} </Typography.Text>
+      ) : null}
+      <List users={users || []} loading={isLoading} dataSource={list || []} />
+    </Container>
+  );
+}
+ProjectListScreen.whyDidYouRender = false;
+
+const Container = styled.div`
+  padding: 3.2rem;
+`;
+export default ProjectListScreen;
