@@ -1,0 +1,30 @@
+module.exports = {
+  extends: ["@commitlint/config-conventional"],
+  rules: {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "test",
+        "chore",
+        "revert",
+        "特性",
+        "修复",
+        "文档",
+        "格式",
+        "重构",
+        "性能",
+        "测试",
+        "工具",
+        "回滚",
+      ],
+    ],
+    "subject-full-stop": [0, "never"],
+    "subject-case": [0, "never"],
+  },
+};
