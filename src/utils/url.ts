@@ -14,8 +14,8 @@ export const useUrlQueryParams = <T extends string>(keys: T[]) => {
           (prev, key) => ({ ...prev, [key]: searchParam.get(key) || "" }),
           {} as { [key in T]: string }
         ),
-      [searchParam]
-    ), // eslint-disable-line1  react-hooks/exhaustive-deps
+      [searchParam] //eslint-disable-line  react-hooks/exhaustive-deps
+    ),
     (params: Partial<{ [key in T]: unknown }>) => {
       const o = cleanObject({
         ...Object.fromEntries(searchParam),
