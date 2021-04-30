@@ -3,20 +3,23 @@ import { Button, Dropdown, Menu } from "antd";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
 import styled from "@emotion/styled";
-import { Row, useDocumentTitle } from "components/lib";
+import { ButtonNoPadding, Row, useDocumentTitle } from "components/lib";
 import { Routes, Route, Navigate } from "react-router";
 import { BrowserRouter as Router } from "react-router-dom";
 import { ReactComponent as SoftwareLogo } from "assets/software-logo.svg";
 import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
+import ProjectModal from "screens/project-list/project-modal";
+import ProjectPopover from "components/project-popover";
+import UserPopover from "components/user-popover";
 function AuthenticaedApp() {
   useDocumentTitle("项目列表", false);
   return (
     <Container>
-      <PageHeader />
-      <Main>
-        {/* 共享router信息 */}
-        <Router>
+      {/* 共享router信息 */}
+      <Router>
+        <PageHeader />
+        <Main>
           <Routes>
             <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
@@ -25,47 +28,56 @@ function AuthenticaedApp() {
             />
             <Navigate to={"/projects"} />
           </Routes>
-        </Router>
-      </Main>
+        </Main>
+        <ProjectModal />
+      </Router>
     </Container>
   );
 }
+
 const PageHeader = () => {
-  const { logout, user } = useAuth();
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
         <HeaderItem>
-          <Button type={"link"} onClick={resetRoute}>
+          <ButtonNoPadding type={"link"} onClick={resetRoute}>
             <SoftwareLogo
               width={"18rem"}
               color={"rgb(38,132,255)"}
             ></SoftwareLogo>
-          </Button>
+          </ButtonNoPadding>
         </HeaderItem>
-        <HeaderItem>项目</HeaderItem>
-        <HeaderItem>用户</HeaderItem>
+        <ProjectPopover />
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
-        <Dropdown
-          overlay={
-            <Menu>
-              <Menu.Item>
-                <Button type={"link"} onClick={logout}>
-                  退出
-                </Button>
-              </Menu.Item>
-            </Menu>
-          }
-        >
-          <Button type={"link"} onClick={(e) => e.preventDefault()}>
-            Hi, {user?.name}
-          </Button>
-        </Dropdown>
+        <User />
       </HeaderRight>
     </Header>
   );
 };
+
+const User = () => {
+  const { logout, user } = useAuth();
+  return (
+    <Dropdown
+      overlay={
+        <Menu>
+          <Menu.Item>
+            <Button type={"link"} onClick={logout}>
+              退出
+            </Button>
+          </Menu.Item>
+        </Menu>
+      }
+    >
+      <Button type={"link"} onClick={(e) => e.preventDefault()}>
+        Hi, {user?.name}
+      </Button>
+    </Dropdown>
+  );
+};
+
 const Container = styled.div`
   display: grid;
   grid-template-rows: 6rem 1fr;
@@ -88,7 +100,9 @@ const HeaderItem = styled.h2`
   margin-right: 3rem;
 `;
 const Main = styled.main`
+  display: flex;
   grid-area: main;
+  overflow: hidden;
 `;
 
 export default AuthenticaedApp;

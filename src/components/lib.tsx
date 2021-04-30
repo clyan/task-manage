@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Spin, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
 import { DevTools } from "jira-dev-tool";
 import { useEffect, useRef } from "react";
 
@@ -41,9 +41,13 @@ export const FullPageLoading = () => (
 export const FullPageErrorFallBack = ({ error }: { error: Error | null }) => (
   <FullPage>
     <DevTools />
-    <Typography.Text type={"danger"}> {error?.message} </Typography.Text>
+    <ErrorBox error={error}></ErrorBox>
   </FullPage>
 );
+
+export const ButtonNoPadding = styled(Button)`
+  padding: 0;
+`;
 
 export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
   const oldTitle = useRef(document.title).current;
@@ -60,3 +64,22 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
     };
   }, [keepOnUnmount, oldTitle]);
 };
+// 类型守卫( 当value有message时，则认为他是一个Error类型)
+const isError = (value: any): value is Error => value?.message;
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+  if (isError(error)) {
+    console.log(error);
+    return (
+      <Typography.Text type={"danger"}> {error?.message} </Typography.Text>
+    );
+  }
+  return null;
+};
+
+export const ScreenContainer = styled.div`
+  padding: 3.2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;

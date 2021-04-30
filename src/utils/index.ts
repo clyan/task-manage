@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const isFalsy = (value: unknown): boolean =>
   value === 0 ? false : !value;
@@ -18,8 +18,6 @@ export const cleanObject = (obj: { [key: string]: unknown }) => {
 export const useMount = (callback: Function): void => {
   useEffect(() => {
     callback();
-    // TODO; 依赖项里加上callback会无限循环， 这个跟useCallBack 和useMemo有关
-    // 这里加上callback 并没有必要。
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 /**
@@ -54,3 +52,17 @@ export const useArray = <A>(initialArray: A[]): any => {
   };
 };
 export const resetRoute = () => (window.location.href = window.location.origin);
+
+/**
+ * 返回组件的挂载状态，如果还没挂载或者已经卸载，返回false,反之返回true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
+};

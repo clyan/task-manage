@@ -2,31 +2,36 @@ import React from "react";
 import { useDebounce } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
-import styled from "@emotion/styled";
-import { Typography } from "antd";
-import { useProject } from "utils/projects";
-import { useUser } from "utils/user";
-import { useUrlQueryParams } from "utils/url";
+import { Button } from "antd";
+import { useProjects } from "utils/projects";
+import { useUsers } from "utils/user";
+import { useProjectModal, useProjectSearchParams } from "./util";
+import {
+  ErrorBox,
+  Row,
+  ScreenContainer,
+  useDocumentTitle,
+} from "components/lib";
 function ProjectListScreen(): React.ReactElement<any> {
-  const [param, setParam] = useUrlQueryParams(["name", "personId"]);
+  useDocumentTitle("项目列表", false);
+  const { open } = useProjectModal();
+  const [param, setParam] = useProjectSearchParams();
   // 节流
   const debounceParam = useDebounce(param, 500);
-  const { isLoading, error, data: list } = useProject(debounceParam);
-  const { data: users } = useUser();
+  const { isLoading, error, data: list } = useProjects(debounceParam);
+  const { data: users } = useUsers();
   return (
-    <Container>
-      <h2>项目列表</h2>
+    <ScreenContainer>
+      <Row between={true} marginBottom={2}>
+        <h2>项目列表</h2>
+        <Button onClick={() => open()}>创建项目</Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
-      {error ? (
-        <Typography.Text type={"danger"}> {error.message} </Typography.Text>
-      ) : null}
+      {error ? <ErrorBox error={error}></ErrorBox> : null}
       <List users={users || []} loading={isLoading} dataSource={list || []} />
-    </Container>
+    </ScreenContainer>
   );
 }
 ProjectListScreen.whyDidYouRender = false;
 
-const Container = styled.div`
-  padding: 3.2rem;
-`;
 export default ProjectListScreen;
