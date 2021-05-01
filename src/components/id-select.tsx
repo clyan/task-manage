@@ -21,7 +21,8 @@ function IdSelect(props: idSelectProps) {
   const { value, onChange, defaultOptionName, options, ...restProps } = props;
   return (
     <Select
-      value={toNumber(value)}
+      // options?.length ? toNumber(value) 解决可能出现的，先显示id, 再显示name的情况
+      value={options?.length ? toNumber(value) : 0}
       onChange={(value) => onChange(toNumber(value) || undefined)}
       {...restProps}
     >

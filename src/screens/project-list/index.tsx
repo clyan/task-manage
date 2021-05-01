@@ -6,9 +6,11 @@ import styled from "@emotion/styled";
 import { Typography } from "antd";
 import { useProject } from "utils/projects";
 import { useUser } from "utils/user";
-import { useUrlQueryParams } from "utils/url";
+import { useProjectSearchParams } from "./util";
+import { useDocumentTitle } from "components/lib";
 function ProjectListScreen(): React.ReactElement<any> {
-  const [param, setParam] = useUrlQueryParams(["name", "personId"]);
+  useDocumentTitle("项目列表", false);
+  const [param, setParam] = useProjectSearchParams();
   // 节流
   const debounceParam = useDebounce(param, 500);
   const { isLoading, error, data: list } = useProject(debounceParam);
