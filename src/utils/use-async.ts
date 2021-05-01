@@ -22,6 +22,8 @@ export const useAsync = <D>(
     ...defaultInitialState,
     ...initialState,
   });
+  // 一定要使用两层函数
+  const [retry, setRetry] = useState(() => () => {});
   const setData = (data: D) =>
     setState({
       data,
@@ -35,11 +37,21 @@ export const useAsync = <D>(
       error: error,
     });
   // 用来触发异步请求
-  const run = (promise: Promise<D>) => {
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
     if (!promise || !promise.then) {
       throw new Error("请传入promise类型数据");
     }
+    // 一定要两层， state会自动第一层
+    setRetry(() => () => {
+      if (runConfig?.retry) {
+        run(runConfig?.retry(), runConfig);
+      }
+    });
     setState({ ...state, stat: "loading" });
+
     return promise
       .then((data) => {
         setData(data);
@@ -57,6 +69,8 @@ export const useAsync = <D>(
     isError: state.stat === "error",
     isSuccess: state.stat === "success",
     run,
+    // 被调用时，重新跑一遍run，让state刷新一遍
+    retry,
     setData,
     setError,
     ...state,

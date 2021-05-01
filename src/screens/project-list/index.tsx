@@ -13,7 +13,7 @@ function ProjectListScreen(): React.ReactElement<any> {
   const [param, setParam] = useProjectSearchParams();
   // 节流
   const debounceParam = useDebounce(param, 500);
-  const { isLoading, error, data: list } = useProject(debounceParam);
+  const { isLoading, error, data: list, retry } = useProject(debounceParam);
   const { data: users } = useUser();
   return (
     <Container>
@@ -22,7 +22,12 @@ function ProjectListScreen(): React.ReactElement<any> {
       {error ? (
         <Typography.Text type={"danger"}> {error.message} </Typography.Text>
       ) : null}
-      <List users={users || []} loading={isLoading} dataSource={list || []} />
+      <List
+        refresh={retry}
+        users={users || []}
+        loading={isLoading}
+        dataSource={list || []}
+      />
     </Container>
   );
 }

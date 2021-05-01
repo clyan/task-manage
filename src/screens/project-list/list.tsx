@@ -3,6 +3,8 @@ import dayjs from "dayjs";
 import React from "react";
 import { User } from "./search-panel";
 import { Link } from "react-router-dom";
+import Pin from "components/pin";
+import { useEditProject } from "utils/projects";
 // TODO 将id 改成number类型
 export interface Project {
   id: number;
@@ -14,13 +16,29 @@ export interface Project {
 }
 interface ListProps extends TableProps<Project> {
   users: User[];
+  refresh?: () => void;
 }
 function ListPanel({ users, ...props }: ListProps): React.ReactElement<any> {
+  const { mutate } = useEditProject();
+  // 柯理化改造。。
+  const pinProject = (id: number) => (pin: boolean) =>
+    mutate({ id, pin }).then(props.refresh);
   return (
     <Table
       rowKey="id"
       pagination={false}
       columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return (
+              <Pin
+                checked={project.pin}
+                onCheckedChagne={pinProject(project.id)}
+              />
+            );
+          },
+        },
         {
           title: "名称",
           dataIndex: "name",
