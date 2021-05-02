@@ -3,12 +3,15 @@ import { useDebounce } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
 import styled from "@emotion/styled";
-import { Typography } from "antd";
+import { Button, Typography } from "antd";
 import { useProject } from "utils/projects";
 import { useUser } from "utils/user";
 import { useProjectSearchParams } from "./util";
-import { useDocumentTitle } from "components/lib";
-function ProjectListScreen(): React.ReactElement<any> {
+import { Row, useDocumentTitle } from "components/lib";
+import { ProjectPopoverProps } from "components/project-popover";
+function ProjectListScreen(
+  props: ProjectPopoverProps
+): React.ReactElement<any> {
   useDocumentTitle("项目列表", false);
   const [param, setParam] = useProjectSearchParams();
   // 节流
@@ -17,12 +20,18 @@ function ProjectListScreen(): React.ReactElement<any> {
   const { data: users } = useUser();
   return (
     <Container>
-      <h2>项目列表</h2>
+      <Row between={true} marginBottom={2}>
+        <h2>项目列表</h2>
+        <Button onClick={() => props.setProjectModalOpen(true)}>
+          创建项目
+        </Button>
+      </Row>
       <SearchPanel param={param} setParam={setParam} users={users || []} />
       {error ? (
         <Typography.Text type={"danger"}> {error.message} </Typography.Text>
       ) : null}
       <List
+        setProjectModalOpen={props.setProjectModalOpen}
         refresh={retry}
         users={users || []}
         loading={isLoading}

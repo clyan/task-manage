@@ -39,7 +39,6 @@ export const UnauthenticatedApp = () => {
     </Container>
   );
 };
-
 export const LongButton = styled(Button)`
   width: 100%;
 `;
