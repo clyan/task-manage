@@ -18,8 +18,6 @@ export const cleanObject = (obj: { [key: string]: unknown }) => {
 export const useMount = (callback: Function): void => {
   useEffect(() => {
     callback();
-    // TODO; 依赖项里加上callback会无限循环， 这个跟useCallBack 和useMemo有关
-    // 这里加上callback 并没有必要。
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
 /**
