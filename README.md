@@ -128,47 +128,48 @@ task-manage 项目名
 
 **参考地址：** [团队编码规范](https://blog.csdn.net/csdn_yudong/article/details/106884274) 、[git 工作流](https://juejin.cn/post/6844903866451001352#heading-1) 、[提交 Pr 流程](https://www.jianshu.com/p/8b7d025a81dc)、[git 工作流](https://github.com/xirong/my-git)、[白话文 git](https://blog.csdn.net/weixin_30263277/article/details/99099322)
 
-- **避免使用 `相对路径` 嵌套过深 :** 配置别名， `tsconfig`中配置`baseUrl:'./src'`
+**避免使用 `相对路径` 嵌套过深 :** 配置别名， `tsconfig`中配置`baseUrl:'./src'`
 
-  ```
-  # 假设： user属于src目录
-  # 配置前
-  # src/util/common/index.js
-  import { getName } from '../../user'
+```
+# 假设： user属于src目录
+# 配置前
+# src/util/common/index.js
+import { getName } from '../../user'
 
-  # 配置后
-  import { getName } from 'user'
-  ```
+# 配置后
+import { getName } from 'user'
+```
 
-- **代码格式化问题：** [prettier](https://prettier.io/docs/en/install.html)
+## prettier
 
-  配置 prettier 有多种方式，参考官网文档，这里采用 prettier 与 prettier-quick
+**代码格式化问题：** [prettier](https://prettier.io/docs/en/install.html)
 
-  ```js
-  yarn add  --dev prettier pretty-quick
-  ```
+配置 prettier 有多种方式，参考官网文档，这里采用 prettier 与 prettier-quick
 
-  新建配置文件.prettierrc.json 与 忽略格式化的配置文件.prettierignore.json
+```js
+yarn add  --dev prettier pretty-quick
+```
 
-  ```bash
-  echo {}> .prettierrc.json
-  type build coverage > .prettierignore
-  ```
+新建配置文件.prettierrc.json 与 忽略格式化的配置文件.prettierignore.json
 
-  ```bash
+```bash
+echo {}> .prettierrc.json
+type build coverage > .prettierignore
+```
 
-  ```
+```bash
 
-## .prettierignore 忽略的文件目录
+```
+
+**.prettierignore 忽略的文件目录**
 
 ```
   build
   coverage
 
-
-
-
 ```
+
+## husky
 
 **每次提交前自动格式化命令：**
 
@@ -221,6 +222,8 @@ yarn add eslint-config-prettier
 
 本地安装 [你可能已经忽略的 git commit 规范](https://zhuanlan.zhihu.com/p/100574040)
 
+## commitizen
+
 [commitizen](https://github.com/commitizen/cz-cli)
 
 ```
@@ -264,9 +267,63 @@ $ ./node_modules/.bin/commitizen init cz-conventional-changelog --save-dev --sav
   }
 ```
 
+.cz-config.js
+
+```js
+"use strict";
+
+module.exports = {
+  types: [
+    { value: "特性", name: "特性:    一个新的特性" },
+    { value: "修复", name: "修复:    修复一个Bug" },
+    { value: "文档", name: "文档:    变更的只有文档" },
+    { value: "格式", name: "格式:    空格, 分号等格式修复" },
+    { value: "重构", name: "重构:    代码重构，注意和特性、修复区分开" },
+    { value: "性能", name: "性能:    提升性能" },
+    { value: "测试", name: "测试:    添加一个测试" },
+    { value: "工具", name: "工具:    开发工具变动(构建、脚手架工具等)" },
+    { value: "回滚", name: "回滚:    代码回退" },
+  ],
+
+  scopes: [
+    { name: "模块1" },
+    { name: "模块2" },
+    { name: "模块3" },
+    { name: "模块4" },
+  ] /*
+  scopeOverrides: {
+    fix: [
+      {name: 'merge'},
+      {name: 'style'},
+      {name: 'e2eTest'},
+      {name: 'unitTest'}
+    ]
+  },
+  */, // it needs to match the value for field type. Eg.: 'fix' // override the messages, defaults are as follows
+
+  messages: {
+    type: "选择一种你的提交类型:",
+    scope: "选择一个scope (可选):", // used if allowCustomScopes is true
+    customScope: "Denote the SCOPE of this change:",
+    subject: "短说明:\n",
+    body: '长说明，使用"|"换行(可选)：\n',
+    breaking: "非兼容性说明 (可选):\n",
+    footer: "关联关闭的issue，例如：#31, #34(可选):\n",
+    confirmCommit: "确定提交说明?",
+  },
+
+  allowCustomScopes: true,
+  allowBreakingChanges: ["特性", "修复"], // limit subject length
+
+  subjectLimit: 100,
+};
+```
+
 **用法：** 先 git add. 再 执行 yarn commit 即可
 
-:sparkles:集成 gitmoji 与 commitizen
+## commitlint
+
+:sparkles:集成 gitmoji 与
 
 [commitlint](https://github.com/conventional-changelog/commitlint): 规范提交信息, 规范参考： [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/@commitlint/config-conventional)
 
@@ -282,18 +339,20 @@ module.exports = {
 };
 ```
 
-github 表情：[gitmoji](https://gitmoji.dev/) [gitmoji/github](https://github.com/carloscuesta/gitmoji/)
-
-```bash
-yarn add gitmoji-cli -g
-```
-
-**添加 husky:**
+**添加 husky 配置:**
 
 windows10 下不要使用单引号，不然会不成功（踩坑很久）[参考](https://zhuanlan.zhihu.com/p/366786798)
 
 ```bash
 npx husky add .husky/commit-msg "npx --no-install commitlint --edit $1"
+```
+
+## gitmoji
+
+github 表情：[gitmoji](https://gitmoji.dev/) [gitmoji/github](https://github.com/carloscuesta/gitmoji/)
+
+```bash
+yarn add gitmoji-cli -g
 ```
 
 **.eslintrc.json 配置 :** 一定要小心，各种报错，这里使用默认的配置
@@ -389,7 +448,7 @@ package.json 添加 scripts 配置
      users.find((user) => user.id === project.personId)?.name;
      ```
 
-4. **参数歧义问题**
+4. **处理参数歧义问题**
 
    1. ```
       `${apiBaseUrl}/projects?name=${param.name}&personId=${param.personId}`
@@ -587,8 +646,6 @@ useHttp 中返回的函数参数类型与 http 的参数类型其实是一致的
 
 **注意：** 此处 typeof 为 ts 中静态使用，与 js 中的动态 typeof 区分。
 
-**扩展：** 除了 Parameters 还有其他的 utility type。
-
 ```js
 interface Config extends RequestInit {
   data?: object;
@@ -618,6 +675,10 @@ export const http = (
   { data, token, headers, ...customConfig }: Config = {}
 ) => {};
 ```
+
+![image-20210501120003571](E:\learnMaterials\InterView\project\imgs\image-20210501120003571.png)
+
+![image-20210501120015257](E:\learnMaterials\InterView\project\imgs\image-20210501120015257.png)
 
 **其他例子：**
 
@@ -902,15 +963,88 @@ Warning: findDOMNode is deprecated in StrictMode. findDOMNode was passed an inst
 
 ![image-20210427152859445](E:\learnMaterials\InterView\project\imgs\image-20210427152859445.png)
 
-多次渲染问题: 未解决
-
-登录后：jira-dev-tool 的问题。
+jira-dev-tool 的问题。
 
 ![image-20210427153255304](E:\learnMaterials\InterView\project\imgs\image-20210427153255304.png)
 
-异步问题，
+**原因在于不能存在多个渲染节点， 使用最新的 jira-dev-tool， 将 DevTools 防止#root 节点内部。**
+
+```
+import { AppProviders } from "context";
+import { loadServer, DevTools } from "jira-dev-tool";
+
+loadServer(() =>
+  ReactDOM.render(
+    <AppProviders>
+      <DevTools />
+      <App />
+    </AppProviders>,
+    document.getElementById("root")
+  )
+);
+
+```
+
+**异步问题，**
 
 useAsync error 不能再同步异步代码混合使用，适合在纯异步中使用。让抛出错误成为可选的。
+
+请求还未完成，但是页面已经销毁了。。
+
+![image-20210502161644098](E:\learnMaterials\InterView\project\imgs\image-20210502161644098.png)
+
+```js
+/**
+ * 返回组件的挂载状态，如果还没挂载或者已经卸载，返回false,反之返回true
+ */
+export const useMountedRef = () => {
+  const mountedRef = useRef(false);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  });
+  return mountedRef;
+};
+```
+
+**使用： 参考 27 行，在 setState 是判断当前组件是否已经卸载。**
+
+```js
+export const useAsync = <D>(
+  initialState?: State<D>,
+  initialConfig?: typeof defaultConfig
+) => {
+  const mountedRef = useMountedRef();
+
+  // 一定要使用两层函数
+  const [retry, setRetry] = useState(() => () => {});
+  const setData = (data: D) =>
+    setState({
+      data,
+      stat: "success",
+      error: null,
+    });
+
+  // 用来触发异步请求
+  const run = (
+    promise: Promise<D>,
+    runConfig?: { retry: () => Promise<D> }
+  ) => {
+    if (!promise || !promise.then) {
+      throw new Error("请传入promise类型数据");
+    }
+    return promise.then((data) => {
+      // 判断当前组件是否已挂载，已卸载则不再设置值
+      if (mountedRef.current) setData(data);
+      return data;
+    });
+  };
+
+  return {};
+};
+```
 
 **错误边界：** 已有 [react-error-boundary](https://www.npmjs.com/package/react-error-boundary)
 
@@ -955,7 +1089,7 @@ class ErrorBoundary extends React.Component<
 export default ErrorBoundary;
 ```
 
-不触发
+不触发事件抛出的异常
 
 ```js
 <Button
@@ -1004,6 +1138,8 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
 };
 ```
 
+# react-router
+
 **路由：** [react-router](https://github.com/ReactTraining/react-router) 这里使用 6 版本
 
 安装选择 v[6.0.0-beta.0](https://github.com/ReactTraining/react-router/releases/tag/v6.0.0-beta.0) 安装完成后缺少 history 包， 接着安装 history (跟版本有关)
@@ -1020,23 +1156,51 @@ react-router@6 与 react-router-dom@6 的关系
 
 **类似于：** react 和 react-dom 的区别， react 核心库，处理虚拟的，计算的、理论的逻辑，类似于我们在组件中 state 的状态， useEffect 的状态怎么来影响虚拟 dom 树，旧的与新的 dom 树进行 diff, react 出的结果由 react-dom 消费, 主要是用于跨平台。
 
+## useUrlQueryParams
+
 **使用 useUrlQueryParams 管理 url 参数状态**
 
-**原理：** 原生 URLSearchParams
+**原理：** 原生的 URLSearchParams
 
-react-router 中的
+这里利用 react-router-dom 中的 useSearchParams
 
 **实现效果描述：** 当复制此时 name= '快递'时，另一个人访问时，自动填充快递
 
 ![image-20210429123955454](E:\learnMaterials\InterView\project\imgs\image-20210429123955454.png)
 
-无限渲染问题： 通过 [why-did-you- render](https://github.com/welldone-software/why-did-you-render) 库排查
+**代码：**
+
+```js
+export const useUrlQueryParams = <T extends string>(keys: T[]) => {
+  const [searchParam, setSearchParam] = useSearchParams();
+
+  return [
+    useMemo(
+      () =>
+        keys.reduce(
+          (prev, key) => ({ ...prev, [key]: searchParam.get(key) || "" }),
+          {} as { [key in T]: string }
+        ),
+      [searchParam] //eslint-disable-line  react-hooks/exhaustive-deps
+    ),
+    (params: Partial<{ [key in T]: unknown }>) => {
+      const o = cleanObject({
+        ...Object.fromEntries(searchParam),
+        ...params,
+      }) as URLSearchParamsInit;
+      return setSearchParam(o);
+    },
+  ] as const; // 解决 返回类型异常问题
+};
+```
+
+**无限循环渲染问题：** 通过 [why-did-you- render](https://github.com/welldone-software/why-did-you-render) 库排查
 
 ```bash
 yarn add @welldone-software/why-did-you-render
 ```
 
-src/ wdyr:
+src/ wdyr.ts:
 
 ```
 import React from 'react';
@@ -1044,7 +1208,7 @@ import React from 'react';
 if (process.env.NODE_ENV === 'development') {
   const whyDidYouRender = require('@welldone-software/why-did-you-render');
   whyDidYouRender(React, {
-  	// true 跟踪所有的函数组件
+  	// true 跟踪所有的函数组件, 这里使用false
     trackAllPureComponents: false,
   });
 }
@@ -1066,7 +1230,7 @@ ProjectListScreen.whyDidYouRender = true;
 
 **循环引用示例:**
 
-**react-hook 依赖的坑** ： **基本类型， 组件状态可放， 非组件组件状态不可放入依赖**
+**react-hook 依赖的坑** ： **基本类型， 组件状态可放， 非组件组件状态，非基本类型不可放入依赖**
 
 依赖 obj 为一个对象， 每次 setNum 重新渲染组件，obj 都不同，会导致页面继续执行 setNum 导致无限循环。
 
@@ -1091,6 +1255,106 @@ const function Test() {
 
 **使用 useMemo 解决：**
 
-useMemo 传入的依赖，需要是 state, 如：由 useState 的定义的值，当值为对象或数组（引用类型时）才不会导致无限引用，
+useMemo 传入的依赖，需要是 state, 如：由 useState 的定义的值，当值为对象或数组（引用类型时）才不会导致无限引用
 
-**字符串 id 与数值 id 的问题** ： 暂未解决，直接使用
+**字符串 id 与数值 id 的问题** ：自定义 id-select 的问题
+
+**柯理化实战：**
+
+**改进前：**
+
+```js
+  // 柯理化改造。。
+  const pinProject = (id:number, pin: boolean) =>  mutate({ id,  pin })
+  return (
+    <Table
+      columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return <Pin checked={project.pin} onCheckedChagne={(pin)=> {
+                pinProject(project.id, pin)
+            }} />
+          }
+        },
+      ]
+      </Table>
+	)
+```
+
+**id 是先有的，pin 是 onCheckedChagne 后才有的，所以可以进行柯理化。**
+
+注意`2` `9` `10` 行的变化
+
+**改进后：**
+
+```js
+  // 柯理化改造。。
+  const pinProject = (id:number)=> (pin: boolean) =>  mutate({ id,  pin })
+  return (
+    <Table
+      columns={[
+        {
+          title: <Pin checked={true} disabled={true} />,
+          render(value, project) {
+            return <Pin checked={project.pin} onCheckedChagne={pinProject(project.id)} />
+          }
+        },
+      ]
+      </Table>
+	)
+```
+
+**问题： 当点击收藏后，服务端返回数据，必须要重新获取服务端的数据，更新页面**
+
+**useState 存入一个函数，会把函数直接运行！！！** 惰性初始 state! 参照官网
+
+**方案一：**
+
+useState 保存函数，不能直接传入函数, 使用两个函数。
+
+```js
+const [callback, setCallback] = React.useState(() => () => {
+    alert('init')
+})
+
+<button onClick={() => setCallback( () => () => { alert('update') })}> </button>
+```
+
+**方案二：**
+
+使用 useRef 保存函数
+
+```js
+const callbackRef = useRef(() => alert('init'))
+const callback = callbackRef.current;
+
+// 使用
+<button onClick={() => (callbackRef.current = () => { alert('update') })}> </button>
+
+// 获取最新的值, 一定要，执行这个函数 callbackRef.current()，不然获取到的初始化的值
+<button onClick={() => callbackRef.current()}> </button>
+```
+
+**useState 与 use Ref 的区别**
+
+1. useState 的值在每个 rernder 中都是独立存在的。而 useRef.current 则更像是相对于 render 函数的一个全局变量，每次他会保持 render 的最新状态。这种关系更像是 js 一个经典的案例：for 循环中异步打印 i 的值，let 声明的 i 就相当于每个都是独立作用域，互相之间不会干扰。var 则反之。
+
+2. useState 值的更新会触发组件重新渲染，而 useRef 的 current 不会出发重渲染
+3. useState 保存函数式状态会有问题。
+
+**优化：**
+
+eslint-disable-line react-hooks/exhaustive-deps 禁止了依赖项， 比如 useEffect 内部使用了 callback 可依赖项里面没有
+
+```js
+export const useMount = (callback: Function): void => {
+  useEffect(() => {
+    callback();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+};
+```
+
+使用 useCallBack 优化。
+
+写自定 hook 时， 如果要返回一个函数，就要用 useCallback 包裹， 如果是返回一个对象则用 useMemo 包裹
