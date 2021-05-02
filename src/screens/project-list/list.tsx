@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import Pin from "components/pin";
 import { useEditProject } from "utils/projects";
 import { ButtonNoPadding } from "components/lib";
-import { ProjectPopoverProps } from "components/project-popover";
 // TODO 将id 改成number类型
 export interface Project {
   id: number;
@@ -16,9 +15,10 @@ export interface Project {
   organization: string;
   created: number;
 }
-interface ListProps extends ProjectPopoverProps, TableProps<Project> {
+interface ListProps extends TableProps<Project> {
   users: User[];
   refresh?: () => void;
+  projectButton: JSX.Element;
 }
 function ListPanel({ users, ...props }: ListProps): React.ReactElement<any> {
   const { mutate } = useEditProject();
@@ -86,14 +86,7 @@ function ListPanel({ users, ...props }: ListProps): React.ReactElement<any> {
               <Dropdown
                 overlay={
                   <Menu>
-                    <Menu.Item key={"edit"}>
-                      <ButtonNoPadding
-                        type={"link"}
-                        onClick={() => props.setProjectModalOpen(true)}
-                      >
-                        编辑
-                      </ButtonNoPadding>
-                    </Menu.Item>
+                    <Menu.Item key={"edit"}>{props.projectButton}</Menu.Item>
                   </Menu>
                 }
               >
