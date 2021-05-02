@@ -1,3 +1,4 @@
+import { useMountedRef } from "utils";
 import { useState } from "react";
 interface State<D> {
   error: Error | null;
@@ -22,6 +23,8 @@ export const useAsync = <D>(
     ...defaultInitialState,
     ...initialState,
   });
+  const mountedRef = useMountedRef();
+
   // 一定要使用两层函数
   const [retry, setRetry] = useState(() => () => {});
   const setData = (data: D) =>
@@ -54,7 +57,8 @@ export const useAsync = <D>(
 
     return promise
       .then((data) => {
-        setData(data);
+        // 判断当前组件是否已挂载，已卸载则不再设置值
+        if (mountedRef.current) setData(data);
         return data;
       })
       .catch((err) => {
@@ -63,6 +67,7 @@ export const useAsync = <D>(
         return err;
       });
   };
+
   return {
     isIdle: state.stat === "idle",
     isLoading: state.stat === "loading",

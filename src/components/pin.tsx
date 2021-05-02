@@ -11,6 +11,7 @@ function Pin(props: PinProps) {
       count={1}
       value={checked ? 1 : 0}
       onChange={(num) => onCheckedChagne?.(!!num)}
+      {...restProps}
     />
   );
 }
