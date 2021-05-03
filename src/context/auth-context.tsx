@@ -5,6 +5,7 @@ import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorFallBack, FullPageLoading } from "components/lib";
+import { useQueryClient } from "react-query";
 const AuthContext = React.createContext<
   | {
       user: User | null;
@@ -46,10 +47,15 @@ export const AuthProvider = ({
     isError,
     error,
   } = useAsync<User | null>();
+  const queryClient = useQueryClient();
   // point free
   const login = (form: AuthForm) => auth.login(form).then(setUser);
   const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
+  const logout = () =>
+    auth.logout().then(() => {
+      setUser(null);
+      queryClient.clear();
+    });
 
   // 初始化user状态，登录后，user被重置为null, 需要重新设置。 页面会先在登录页，在闪回主页。
   useMount(() => {

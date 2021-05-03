@@ -114,7 +114,7 @@ const More = ({ project }: { project: Project }) => {
     <Dropdown
       overlay={
         <Menu>
-          <Menu.Item key={"edit"} onClick={() => editProject(project.id)}>
+          <Menu.Item key={"edit"} onClick={editProject(project.id)}>
             编辑
           </Menu.Item>
           <Menu.Item

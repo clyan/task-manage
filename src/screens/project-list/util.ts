@@ -35,13 +35,17 @@ export const useProjectModal = () => {
 
   const open = () => setProjectCreate({ projectCreate: true });
 
-  const close = () => setUrlParams({ projectCreate: "", editingProjectId: "" });
+  const close = () =>
+    setUrlParams({ projectCreate: undefined, editingProjectId: undefined });
+
   const startEdit = (id: number) => {
+    console.log("asds");
     setEditingProjectId({ editingProjectId: id });
   };
+
   // projectCreate url中是字符串类型
   return {
-    projectModalOpen: projectCreate === "true" || Boolean(editingProject),
+    projectModalOpen: projectCreate === "true" || Boolean(editingProjectId),
     open,
     close,
     startEdit,
