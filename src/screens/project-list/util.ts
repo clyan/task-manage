@@ -14,3 +14,19 @@ export const useProjectSearchParams = () => {
     setParam,
   ] as const; // 注意点！！！加const
 };
+
+// modal参数
+export const useProjectModal = () => {
+  const [{ projectCreate }, setProjectCreate] = useUrlQueryParams([
+    "projectCreate",
+  ]);
+  const open = () => setProjectCreate({ projectCreate: true });
+  const close = () => setProjectCreate({ projectCreate: undefined });
+
+  // projectCreate url中是字符串类型
+  return {
+    projectModalOpen: projectCreate === "true",
+    open,
+    close,
+  };
+};
