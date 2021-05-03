@@ -1,3 +1,4 @@
+import { useProject } from "utils/projects";
 import { useMemo } from "react";
 import { useUrlQueryParams } from "utils/url";
 
@@ -20,13 +21,32 @@ export const useProjectModal = () => {
   const [{ projectCreate }, setProjectCreate] = useUrlQueryParams([
     "projectCreate",
   ]);
-  const open = () => setProjectCreate({ projectCreate: true });
-  const close = () => setProjectCreate({ projectCreate: undefined });
 
+  const [{ editingProjectId }, setEditingProjectId] = useUrlQueryParams([
+    "editingProjectId",
+  ]);
+
+  const { data: editingProject, isLoading } = useProject(
+    Number(editingProjectId)
+  );
+
+  const open = () => setProjectCreate({ projectCreate: true });
+
+  const close = () => {
+    Boolean(editingProject) &&
+      setEditingProjectId({ editingProjectId: undefined });
+    projectCreate === "true" && setProjectCreate({ projectCreate: undefined });
+  };
+  const startEdit = (id: number) => {
+    setEditingProjectId({ editingProjectId: id });
+  };
   // projectCreate url中是字符串类型
   return {
-    projectModalOpen: projectCreate === "true",
+    projectModalOpen: projectCreate === "true" || Boolean(editingProject),
     open,
     close,
+    startEdit,
+    editingProject,
+    isLoading,
   };
 };

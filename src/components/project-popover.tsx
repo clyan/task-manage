@@ -1,13 +1,13 @@
 import { Divider, List, Popover, Typography } from "antd";
 import React from "react";
-import { useProject } from "utils/projects";
+import { useProjects } from "utils/projects";
 import styled from "@emotion/styled";
 import { ButtonNoPadding } from "./lib";
 import { useProjectModal } from "screens/project-list/util";
 
 function ProjectPopover() {
   const { open } = useProjectModal();
-  const { data: projects } = useProject();
+  const { data: projects } = useProjects();
   const pinnedProjects = projects?.filter((project) => project.pin);
   const content = (
     <ContentContainer>

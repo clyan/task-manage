@@ -5,8 +5,8 @@ type SelectProps = React.ComponentProps<typeof Select>;
 
 interface idSelectProps
   extends Omit<SelectProps, "value" | "onChange" | "options"> {
-  value: Row | null | undefined;
-  onChange: (value?: number) => void;
+  value?: Row | null | undefined;
+  onChange?: (value?: number) => void;
   defaultOptionName?: string;
   options?: { name: string; id: number }[];
 }
@@ -23,7 +23,7 @@ function IdSelect(props: idSelectProps) {
     <Select
       // options?.length ? toNumber(value) 解决可能出现的，先显示id, 再显示name的情况
       value={options?.length ? toNumber(value) : 0}
-      onChange={(value) => onChange(toNumber(value) || undefined)}
+      onChange={(value) => onChange?.(toNumber(value) || undefined)}
       {...restProps}
     >
       {defaultOptionName ? (

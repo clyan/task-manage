@@ -41,7 +41,7 @@ export const FullPageLoading = () => (
 export const FullPageErrorFallBack = ({ error }: { error: Error | null }) => (
   <FullPage>
     <DevTools />
-    <Typography.Text type={"danger"}> {error?.message} </Typography.Text>
+    <ErrorBox error={error}></ErrorBox>
   </FullPage>
 );
 
@@ -63,4 +63,16 @@ export const useDocumentTitle = (title: string, keepOnUnmount = true) => {
       }
     };
   }, [keepOnUnmount, oldTitle]);
+};
+// 类型守卫( 当value有message时，则认为他是一个Error类型)
+const isError = (value: any): value is Error => value?.message;
+
+export const ErrorBox = ({ error }: { error: unknown }) => {
+  if (isError(error)) {
+    console.log(error);
+    return (
+      <Typography.Text type={"danger"}> {error?.message} </Typography.Text>
+    );
+  }
+  return null;
 };

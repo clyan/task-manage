@@ -2,7 +2,7 @@
 import React from "react";
 import { Form, Input } from "antd";
 import { Project } from "./list";
-import UseSelect from "components/use-select";
+import UserSelect from "components/user-select";
 
 export interface User {
   id: number;
@@ -35,16 +35,7 @@ function SearchPanel({
         />
       </Form.Item>
       <Form.Item>
-        <UseSelect
-          defaultOptionName={"负责人"}
-          value={param.personId}
-          onChange={(value) =>
-            setParam({
-              ...param,
-              personId: value,
-            })
-          }
-        />
+        <UserSelect defaultOptionName={"负责人"} />
       </Form.Item>
     </Form>
   );
