@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { useAuth } from "context/auth-context";
 import ProjectListScreen from "screens/project-list";
@@ -13,38 +13,14 @@ import ProjectModal from "screens/project-list/project-modal";
 import ProjectPopover from "components/project-popover";
 function AuthenticaedApp() {
   useDocumentTitle("项目列表", false);
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
   return (
     <Container>
-      <PageHeader
-        projectButton={
-          <ButtonNoPadding
-            onClick={() => setProjectModalOpen(true)}
-            type={"link"}
-          >
-            创建项目
-          </ButtonNoPadding>
-        }
-      />
+      <PageHeader />
       <Main>
         {/* 共享router信息 */}
         <Router>
           <Routes>
-            <Route
-              path={"/projects"}
-              element={
-                <ProjectListScreen
-                  projectButton={
-                    <ButtonNoPadding
-                      onClick={() => setProjectModalOpen(true)}
-                      type={"link"}
-                    >
-                      创建项目
-                    </ButtonNoPadding>
-                  }
-                />
-              }
-            />
+            <Route path={"/projects"} element={<ProjectListScreen />} />
             <Route
               path={"/projects/:projectId/*"}
               element={<ProjectScreen />}
@@ -53,15 +29,12 @@ function AuthenticaedApp() {
           </Routes>
         </Router>
       </Main>
-      <ProjectModal
-        projectModalOpen={projectModalOpen}
-        onClose={() => setProjectModalOpen(false)}
-      />
+      <ProjectModal />
     </Container>
   );
 }
 
-const PageHeader = (props: { projectButton: JSX.Element }) => {
+const PageHeader = () => {
   return (
     <Header between={true}>
       <HeaderLeft gap={true}>
@@ -73,7 +46,7 @@ const PageHeader = (props: { projectButton: JSX.Element }) => {
             ></SoftwareLogo>
           </ButtonNoPadding>
         </HeaderItem>
-        <ProjectPopover {...props} />
+        <ProjectPopover />
         <span>用户</span>
       </HeaderLeft>
       <HeaderRight>

@@ -1,27 +1,20 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useCallback } from "react";
 import * as auth from "auth-provider";
 import { User } from "screens/project-list/search-panel";
 import { http } from "utils/http";
 import { useMount } from "utils";
 import { useAsync } from "utils/use-async";
 import { FullPageErrorFallBack, FullPageLoading } from "components/lib";
-const AuthContext = React.createContext<
-  | {
-      user: User | null;
-      register: (form: AuthForm) => Promise<void>;
-      login: (form: AuthForm) => Promise<void>;
-      logout: () => Promise<void>;
-    }
-  | undefined
->(undefined);
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "store/auth.slice";
+import * as authStore from "store/auth.slice";
 
-AuthContext.displayName = "AuthContext";
-
-interface AuthForm {
+export interface AuthForm {
   username: string;
   password: string;
 }
-const bootstrapUser = async () => {
+
+export const bootstrapUser = async () => {
   let user = null;
   const token = auth.getToken();
   // 使用token，拿user的信息。
@@ -32,28 +25,12 @@ const bootstrapUser = async () => {
   return user;
 };
 
-export const AuthProvider = ({
-  children,
-}: {
-  children: ReactNode;
-}): React.ReactElement<any> => {
-  const {
-    data: user,
-    run,
-    isIdle,
-    isLoading,
-    setData: setUser,
-    isError,
-    error,
-  } = useAsync<User | null>();
-  // point free
-  const login = (form: AuthForm) => auth.login(form).then(setUser);
-  const register = (form: AuthForm) => auth.register(form).then(setUser);
-  const logout = () => auth.logout().then(() => setUser(null));
-
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+  const { run, isIdle, isLoading, isError, error } = useAsync<User | null>();
+  const dispatch: (...args: unknown[]) => Promise<User> = useDispatch();
   // 初始化user状态，登录后，user被重置为null, 需要重新设置。 页面会先在登录页，在闪回主页。
   useMount(() => {
-    run(bootstrapUser());
+    run(dispatch(authStore.bootstrap()));
   });
   // 添加全局loading, 登录后刷新页面
   if (isIdle || isLoading) {
@@ -62,18 +39,25 @@ export const AuthProvider = ({
   if (isError) {
     return <FullPageErrorFallBack error={error} />;
   }
-  return (
-    <AuthContext.Provider
-      children={children}
-      value={{ user, login, register, logout }}
-    />
-  );
+  return <div>{children}</div>;
 };
 
 export const useAuth = () => {
-  const context = React.useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth 必须在AuthProvider中使用");
-  }
-  return context;
+  const dispatch: (...args: unknown[]) => Promise<User> = useDispatch();
+  const user = useSelector(selectUser);
+  const login = useCallback(
+    (form: AuthForm) => dispatch(authStore.login(form)),
+    [dispatch]
+  );
+  const register = useCallback(
+    (form: AuthForm) => dispatch(authStore.register(form)),
+    [dispatch]
+  );
+  const logout = useCallback(() => dispatch(authStore.logout()), [dispatch]);
+  return {
+    user,
+    login,
+    register,
+    logout,
+  };
 };
