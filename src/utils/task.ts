@@ -1,3 +1,4 @@
+import { SortProps } from "./kanban";
 import { Task } from "types/task";
 
 import { useHttp } from "utils/http";
@@ -6,6 +7,7 @@ import {
   useAddConfig,
   useDeleteConfig,
   useEditConfig,
+  useReorderTaskConfig,
 } from "./use-optimistic-options";
 
 // 获取所有
@@ -60,4 +62,14 @@ export const useTask = (id?: number) => {
   return useQuery<Task>(["task", { id }], () => client(`tasks/${id}`), {
     enabled: Boolean(id),
   });
+};
+
+export const useReorderTask = (queryKey: QueryKey) => {
+  const client = useHttp();
+  return useMutation((params: SortProps) => {
+    return client("tasks/reorder", {
+      data: params,
+      method: "POST",
+    });
+  }, useReorderTaskConfig(queryKey));
 };
