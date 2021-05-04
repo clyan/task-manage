@@ -11,6 +11,7 @@ import { ProjectScreen } from "screens/project";
 import { resetRoute } from "utils";
 import ProjectModal from "screens/project-list/project-modal";
 import ProjectPopover from "components/project-popover";
+import UserPopover from "components/user-popover";
 function AuthenticaedApp() {
   useDocumentTitle("项目列表", false);
   return (
@@ -47,7 +48,7 @@ const PageHeader = () => {
           </ButtonNoPadding>
         </HeaderItem>
         <ProjectPopover />
-        <span>用户</span>
+        <UserPopover />
       </HeaderLeft>
       <HeaderRight>
         <User />

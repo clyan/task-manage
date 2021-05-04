@@ -7,7 +7,7 @@ import { useProjectModal } from "screens/project-list/util";
 
 function ProjectPopover() {
   const { open } = useProjectModal();
-  const { data: projects } = useProjects();
+  const { data: projects, refetch } = useProjects();
   const pinnedProjects = projects?.filter((project) => project.pin);
   const content = (
     <ContentContainer>
@@ -26,7 +26,11 @@ function ProjectPopover() {
     </ContentContainer>
   );
   return (
-    <Popover placement={"bottom"} content={content}>
+    <Popover
+      onVisibleChange={() => refetch()}
+      placement={"bottom"}
+      content={content}
+    >
       项目
     </Popover>
   );
