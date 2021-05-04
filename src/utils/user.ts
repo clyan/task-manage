@@ -1,7 +1,7 @@
 import { useMount } from "./index";
 import { useHttp } from "utils/http";
 import { useAsync } from "./use-async";
-import { User } from "screens/project-list/search-panel";
+import { User } from "types/user";
 
 export const useUser = (params?: Partial<User>) => {
   const client = useHttp();

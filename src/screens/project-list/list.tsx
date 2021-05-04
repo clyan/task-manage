@@ -1,27 +1,17 @@
 import { Dropdown, Menu, Modal, Table, TableProps } from "antd";
+import { ButtonNoPadding } from "components/lib";
+import Pin from "components/pin";
 import dayjs from "dayjs";
 import React from "react";
-import { User } from "./search-panel";
 import { Link } from "react-router-dom";
-import Pin from "components/pin";
 import {
   useDeleteProject,
   useEditProject,
   useProjectQueryKey,
 } from "utils/projects";
-import { ButtonNoPadding } from "components/lib";
+import { Project } from "types/project";
+import { User } from "types/user";
 import { useProjectModal } from "./util";
-
-// TODO 将id 改成number类型
-export interface Project {
-  id: number;
-  name: string;
-  personId: number;
-  pin: boolean;
-  organization: string;
-  created: number;
-}
-
 interface ListProps extends TableProps<Project> {
   users: User[];
 }
@@ -114,7 +104,7 @@ const More = ({ project }: { project: Project }) => {
     <Dropdown
       overlay={
         <Menu>
-          <Menu.Item key={"edit"} onClick={editProject(project.id)}>
+          <Menu.Item key={"edit"} onClick={() => editProject(project.id)}>
             编辑
           </Menu.Item>
           <Menu.Item
