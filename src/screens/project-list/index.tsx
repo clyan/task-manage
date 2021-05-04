@@ -2,10 +2,9 @@ import React from "react";
 import { useDebounce } from "utils";
 import List from "./list";
 import SearchPanel from "./search-panel";
-import styled from "@emotion/styled";
 import { Button } from "antd";
 import { useProjects } from "utils/projects";
-import { useUser } from "utils/user";
+import { useUsers } from "utils/user";
 import { useProjectModal, useProjectSearchParams } from "./util";
 import {
   ErrorBox,
@@ -20,7 +19,7 @@ function ProjectListScreen(): React.ReactElement<any> {
   // 节流
   const debounceParam = useDebounce(param, 500);
   const { isLoading, error, data: list } = useProjects(debounceParam);
-  const { data: users } = useUser();
+  const { data: users } = useUsers();
   return (
     <ScreenContainer>
       <Row between={true} marginBottom={2}>

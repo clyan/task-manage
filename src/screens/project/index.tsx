@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { Menu } from "antd";
-import { ScreenContainer } from "components/lib";
 import React from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router";
 import { Link } from "react-router-dom";

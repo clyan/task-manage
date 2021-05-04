@@ -12,6 +12,7 @@ import { SearchPanel } from "./search-panel";
 import { useTasks } from "utils/task";
 import { Spin } from "antd";
 import { CreateKanban } from "./create-kanban";
+import { TaskModal } from "./task-modal";
 export function KanbanScreen() {
   useDocumentTitle("看板列表");
   const { data: kanbans, isLoading: kanbanIsLoading } = useKanbans(
@@ -34,6 +35,7 @@ export function KanbanScreen() {
           <CreateKanban />
         </ColumnsContainer>
       )}
+      <TaskModal />
     </ScreenContainer>
   );
 }

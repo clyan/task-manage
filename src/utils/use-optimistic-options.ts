@@ -38,5 +38,11 @@ export const useEditConfig = (queryKey: QueryKey) =>
 export const useAddConfig = (queryKey: QueryKey) =>
   useConfig(queryKey, (target, old: any) => {
     console.log("target", target);
-    return old ? [...old, target] : [];
+    // 存在问题， id 可能会冲突, 必须加id, 不然循环绑定使用key会报错
+    return old
+      ? [
+          ...old,
+          { ...target, id: Math.floor(Math.random() * (1000 - 1 + 1)) + 1 },
+        ]
+      : [];
   });

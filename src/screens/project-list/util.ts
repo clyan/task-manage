@@ -1,4 +1,4 @@
-import { useSetUrlSearchParam } from "./../../utils/url";
+import { useSetUrlSearchParam } from "utils/url";
 import { useProject } from "utils/projects";
 import { useMemo } from "react";
 import { useUrlQueryParams } from "utils/url";
@@ -39,7 +39,6 @@ export const useProjectModal = () => {
     setUrlParams({ projectCreate: undefined, editingProjectId: undefined });
 
   const startEdit = (id: number) => {
-    console.log("asds");
     setEditingProjectId({ editingProjectId: id });
   };
 

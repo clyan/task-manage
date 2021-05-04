@@ -1,6 +1,4 @@
 import { useCallback, useReducer } from "react";
-import { useState } from "react";
-
 const UNDO = "UNDO";
 const REDO = "REDO";
 const SET = "SET";
