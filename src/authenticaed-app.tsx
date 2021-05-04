@@ -99,7 +99,9 @@ const HeaderItem = styled.h2`
   margin-right: 3rem;
 `;
 const Main = styled.main`
+  display: flex;
   grid-area: main;
+  overflow: hidden;
 `;
 
 export default AuthenticaedApp;
