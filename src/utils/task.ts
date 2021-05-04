@@ -33,7 +33,6 @@ export const useAddTask = (queryKey: QueryKey) => {
 
 export const useDeleteTask = (queryKey: QueryKey) => {
   const client = useHttp();
-
   return useMutation(
     ({ id }: { id: number }) =>
       client(`tasks/${id}`, {

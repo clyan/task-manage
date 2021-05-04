@@ -55,6 +55,7 @@ export const useTaskModal = () => {
 
   return {
     editingTask,
+    editingTaskId,
     startEdit,
     close,
     isLoading,

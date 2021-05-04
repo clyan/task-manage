@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useTaskModal, useTasksQueryKey } from "screens/kanban/utils";
-import { Form, Input, Modal } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEditTask } from "utils/task";
+import { useDeleteTask, useEditTask } from "utils/task";
 import UserSelect from "components/user-select";
 import { TaskTypeSelect } from "components/task-type";
 
@@ -16,7 +16,7 @@ export const TaskModal = () => {
   const { mutateAsync: editTask, isLoading: editingLoading } = useEditTask(
     useTasksQueryKey()
   );
-  const { editingTask, close } = useTaskModal();
+  const { editingTask, close, editingTaskId } = useTaskModal();
 
   const onCancel = () => {
     close();
@@ -30,11 +30,23 @@ export const TaskModal = () => {
     form.setFieldsValue(editingTask);
   }, [form, editingTask]);
 
+  const { mutateAsync: deleteTask } = useDeleteTask(useTasksQueryKey());
+  const cofirmDeleteTask = (id: number) => {
+    close();
+    Modal.confirm({
+      title: "确定删除这个任务吗？",
+      content: "点击确定删除",
+      okText: "确定",
+      onOk() {
+        deleteTask({ id });
+      },
+    });
+  };
+
   return (
     <Modal
       forceRender={true}
       confirmLoading={editingLoading}
-      bodyStyle={{ display: "flex", justifyContent: "center" }}
       okText={"确认"}
       cancelText={"取消"}
       title={"编辑任务"}
@@ -57,6 +69,16 @@ export const TaskModal = () => {
           <TaskTypeSelect />
         </Form.Item>
       </Form>
+      <div style={{ textAlign: "right" }}>
+        <Button
+          size={"small"}
+          style={{ fontSize: "14px" }}
+          onClick={() => cofirmDeleteTask(Number(editingTaskId))}
+        >
+          {" "}
+          删除
+        </Button>
+      </div>
     </Modal>
   );
 };

@@ -34,7 +34,7 @@ function LoginScreen({
       ) : null}
       <Form.Item
         name={"username"}
-        initialValue={"ywy"}
+        initialValue={"bbb"}
         rules={[{ required: true, message: "请输入用户名" }]}
       >
         <Input placeholder={"用户名"} type="text" id={"username"} />
