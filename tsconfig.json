@@ -17,6 +17,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src"],
+  "include": ["src", "test/state-test.js"],
   "exclude": ["node_modules", "dist"]
 }
