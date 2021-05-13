@@ -7,8 +7,9 @@ module.exports = (appInfo) => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + "_1620314879792_3003";
   // add your middleware config here
-  config.middleware = [];
-
+  config.middleware = ["errorHandler", "auth"];
+  // 免验证
+  config.routerAuth = ["/", "/api/v1/login", "/api/v1/register"];
   // add your user config here
   const userConfig = {
     // passportGithub: {
@@ -20,7 +21,7 @@ module.exports = (appInfo) => {
     //   passwordField: 'pass',
     // },
     mongoose: {
-      url: process.env.EGG_MONGO_HOST || "mongodb://127.0.0.1:27017/taskmanage",
+      url: "mongodb://127.0.0.1/taskmanage",
       options: {
         server: { poolSize: 20 },
         useNewUrlParser: true,
@@ -62,22 +63,6 @@ module.exports = (appInfo) => {
       secret: "Great4-M",
       enable: false, // default is false
       match: "/jwt", // optional
-      // eslint-disable-next-line arrow-parens
-      getToken: (ctx) => {
-        // 获取token的方式
-        const _token =
-          ctx.header.authorization ||
-          ctx.query.token ||
-          (ctx.request.body && ctx.request.body.token) ||
-          ctx.cookies.get("ck_token", {
-            signed: true, // 加签 前端无法修改
-            encrypt: true, // 加密
-          }) ||
-          (ctx.header.cookie && ctx.header.cookie.substring(9)) || // 空9位是ck_token=的长度
-          "";
-        // log(ctx.request.body);
-        return _token;
-      },
     },
     rest: {
       urlprefix: "/api/v1/", // Prefix of rest api url. Default to /api/

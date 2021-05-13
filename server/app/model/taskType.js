@@ -1,18 +1,16 @@
 "use strict";
-
 module.exports = (app) => {
   const mongoose = app.mongoose;
   const Schema = mongoose.Schema;
-
-  const UserSchema = new Schema(
+  const TaskTypeSchema = new Schema(
     {
-      username: { type: String },
-      password: { type: String },
+      id: { type: Number },
+      name: { type: String },
       createdAt: { type: Date, default: Date.now },
     },
     {
       minimize: true,
     }
   );
-  return mongoose.model("User", UserSchema);
+  return mongoose.model("TaskType", TaskTypeSchema);
 };

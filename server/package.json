@@ -15,7 +15,8 @@
     "egg-redis": "^2.4.0",
     "egg-rest": "^2.1.0",
     "egg-scripts": "^2.11.0",
-    "egg-validate": "^2.0.2"
+    "egg-validate": "^2.0.2",
+    "md5": "^2.3.0"
   },
   "devDependencies": {
     "autod": "^3.0.1",

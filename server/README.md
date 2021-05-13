@@ -25,6 +25,4 @@ $ npm stop
 
 [egg-rest](https://github.com/eggjs/egg-rest)
 
-## 部署
-
-[宝塔面板部署](https://www.jianshu.com/p/ba153fc7d8c2?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
+https://www.jianshu.com/p/ba153fc7d8c2?hmsr=toutiao.io&utm_medium=toutiao.io&utm_source=toutiao.io)
