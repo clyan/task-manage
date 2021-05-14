@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export const isFalsy = (value: unknown): boolean =>
   value === 0 ? false : !value;
@@ -20,6 +20,7 @@ export const useMount = (callback: Function): void => {
     callback();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 };
+
 /**
  *
  * @param {*} value
@@ -36,6 +37,23 @@ export const useDebounce = <V>(value: V, delay?: number): V => {
   }, [value, delay]);
   return debouncedValue;
 };
+
+// 节流
+// export default function useThrottle(fn: (value:any) => {}, delay: number) {
+//   const { current } = useRef({ fn, timer: 0 as number | undefined})
+//   useEffect(function () {
+//     current.fn = fn
+//   },[fn, current])
+
+//   return useCallback(function f(...args) {
+//     if (!current.timer) {
+//       current.timer = window.setTimeout(() => {
+//         delete current.timer
+//       }, delay)
+//       current.fn.call(this, ...args)
+//     }
+//   }, [current, delay]);
+// }
 
 export const useArray = <A>(initialArray: A[]): any => {
   const [value, setValue] = useState(initialArray);

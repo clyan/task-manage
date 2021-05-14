@@ -17,6 +17,7 @@ import { CreateKanban } from "./create-kanban";
 import { TaskModal } from "./task-modal";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Drag, Drop, DropChild } from "components/drag-and-drop";
+import { useDebounce } from "utils";
 
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
@@ -28,6 +29,23 @@ export const KanbanScreen = () => {
   const isLoading = kanbanIsLoading || taskIsLoading;
 
   const onDragEnd = useDragEnd();
+  const debounce = useDebounce((e: any) => {
+    console.log("ASdsa");
+    const delta = Math.max(
+      -1,
+      Math.min(1, e.nativeEvent.wheelDelta || -e.nativeEvent.detail)
+    );
+    e.currentTarget.scrollLeft -= delta * 30;
+  });
+  const handleScroll = (e: any) => {
+    console.log("ASdsa");
+    const delta = Math.max(
+      -1,
+      Math.min(1, e.nativeEvent.wheelDelta || -e.nativeEvent.detail)
+    );
+    e.currentTarget.scrollLeft -= delta * 30;
+  };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <ScreenContainer>
@@ -36,7 +54,7 @@ export const KanbanScreen = () => {
         {isLoading ? (
           <Spin size={"large"} />
         ) : (
-          <ColumnsContainer>
+          <ColumnsContainer onWheel={(e) => handleScroll(e)}>
             <Drop
               type={"COLUMN"}
               direction={"horizontal"}
@@ -121,7 +139,7 @@ export const useDragEnd = () => {
 };
 export const ColumnsContainer = styled("div")`
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
   flex: 1;
   /* ::-webkit-scrollbar {
     display: none;

@@ -11,7 +11,7 @@ import "antd/dist/antd.less";
 loadServer(() =>
   ReactDOM.render(
     <AppProviders>
-      <DevTools />
+      {/* <DevTools /> */}
       <App />
     </AppProviders>,
     document.getElementById("root")
