@@ -29,14 +29,7 @@ export const KanbanScreen = () => {
   const isLoading = kanbanIsLoading || taskIsLoading;
 
   const onDragEnd = useDragEnd();
-  const debounce = useDebounce((e: any) => {
-    console.log("ASdsa");
-    const delta = Math.max(
-      -1,
-      Math.min(1, e.nativeEvent.wheelDelta || -e.nativeEvent.detail)
-    );
-    e.currentTarget.scrollLeft -= delta * 30;
-  });
+
   const handleScroll = (e: any) => {
     console.log("ASdsa");
     const delta = Math.max(
