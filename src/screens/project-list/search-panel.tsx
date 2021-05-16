@@ -27,7 +27,16 @@ function SearchPanel({
         />
       </Form.Item>
       <Form.Item>
-        <UserSelect defaultOptionName={"负责人"} />
+        <UserSelect
+          defaultOptionName={"负责人"}
+          value={param.personId}
+          onChange={(value) =>
+            setParam({
+              ...param,
+              personId: value,
+            })
+          }
+        />
       </Form.Item>
     </Form>
   );

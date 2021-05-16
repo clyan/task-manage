@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const isFalsy = (value: unknown): boolean =>
   value === 0 ? false : !value;

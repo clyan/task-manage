@@ -17,7 +17,6 @@ import { CreateKanban } from "./create-kanban";
 import { TaskModal } from "./task-modal";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { Drag, Drop, DropChild } from "components/drag-and-drop";
-import { useDebounce } from "utils";
 
 export const KanbanScreen = () => {
   useDocumentTitle("看板列表");
@@ -31,7 +30,6 @@ export const KanbanScreen = () => {
   const onDragEnd = useDragEnd();
 
   const handleScroll = (e: any) => {
-    console.log("ASdsa");
     const delta = Math.max(
       -1,
       Math.min(1, e.nativeEvent.wheelDelta || -e.nativeEvent.detail)

@@ -13,7 +13,7 @@ export const UnauthenticatedApp = () => {
   useDocumentTitle("请登录或注册以继续", false);
   return (
     <Container>
-      <Header></Header>
+      <Header>任务管理系统</Header>
       <Background />
       <ShadowCard>
         <Title>{isRegister ? "请注册" : "请登录"}</Title>
@@ -60,7 +60,9 @@ const Background = styled.div`
 `;
 
 const Header = styled.header`
-  background: url(${logo}) no-repeat center;
+  /* background: url(${logo}) no-repeat center; */
+  text-align: center;
+  font-size: 2.6rem;
   padding: 5rem 0;
   background-size: 8rem;
   width: 100%;
