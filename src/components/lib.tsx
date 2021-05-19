@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { Button, Spin, Typography } from "antd";
-import { DevTools } from "jira-dev-tool";
+// import { DevTools } from "jira-dev-tool";
 import { useEffect, useRef } from "react";
 
 export const Row = styled.div<{
@@ -40,7 +40,7 @@ export const FullPageLoading = () => (
 
 export const FullPageErrorFallBack = ({ error }: { error: Error | null }) => (
   <FullPage>
-    <DevTools />
+    {/* <DevTools /> */}
     <ErrorBox error={error}></ErrorBox>
   </FullPage>
 );

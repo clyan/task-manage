@@ -18,7 +18,7 @@ jobs:
           node-version: 14.0.0
 
       - name: 安装依赖
-        run: npm install
+        run: npm install jira-dev-tool@next & npm install
 
       - name: 打包
         run: npm run build
